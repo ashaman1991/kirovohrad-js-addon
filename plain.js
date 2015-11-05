@@ -1,7 +1,7 @@
 module.exports = {
   heavy: function (height, width) {
     console.log('This is heavy js!');
-    return mandelbrot(height, width, -2, 1, -1, 1, 1500);
+    return mandelbrot(height, width, -2, 1, -1, 1, 1300);
   }
 };
 

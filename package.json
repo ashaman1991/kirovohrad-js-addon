@@ -3,7 +3,7 @@
   "scripts": {
     "start": "node server.js",
     "configure": "cd ./addon && node-gyp configure",
-    "build": "cd ./addon && node-gyp configure && node-gyp build",
+    "build": "cd ./addon && node-gyp rebuild",
     "test": "cd ./addon && mocha"
   },
   "devDependencies": {

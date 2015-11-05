@@ -6,8 +6,8 @@
    using Mandelbrot algorithm ( boolean escape time )
    -------------------------------
    2. technique of creating ppm file is  based on the code of Claudio Rocchini
-   http://en.wikipedia.org/wiki/Image:Color_complex_plot.jpg
-   create 24 bit color graphic file ,  portable pixmap file = PPM
+   http://en.wikipedia.org/wiki/Image:pixel_complex_plot.jpg
+   create 24 bit pixel graphic file ,  portable pixmap file = PPM
    see http://en.wikipedia.org/wiki/Portable_pixmap
    to see the file use external application ( graphic viewer)
  */
@@ -16,45 +16,33 @@ v8::Local<v8::Array> generatePng()
 {
         /* screen ( integer) coordinate */
         int iX,iY;
-        const int iXmax = 800;
-        const int iYmax = 800;
+        const int iXmax = 255;
+        const int iYmax = 255;
         /* world ( double) coordinate = parameter plane*/
         double Cx,Cy;
-        const double CxMin=-2.5;
-        const double CxMax=1.5;
-        const double CyMin=-2.0;
-        const double CyMax=2.0;
-        /* */
-        double PixelWidth=(CxMax-CxMin)/iXmax;
-        double PixelHeight=(CyMax-CyMin)/iYmax;
-        /* color component ( R or G or B) is coded from 0 to 255 */
-        /* it is 24 bit color RGB file */
-        const int MaxColorComponentValue=255;
-        FILE * fp;
-        const char *filename="new1.ppm";
-        const char *comment="# "; /* comment should start with # */
-        static unsigned char color[3];
+        const double CxMin=-1.0;
+        const double CxMax=1.0;
+        const double CyMin=-1.0;
+        const double CyMax=1.0;
+
+        static unsigned char pixel[4];
         /* Z=Zx+Zy*i  ;   Z0 = 0 */
         double Zx, Zy;
         double Zx2, Zy2; /* Zx2=Zx*Zx;  Zy2=Zy*Zy  */
         /*  */
         int Iteration;
-        const int IterationMax=200;
+        const int IterationMax=500;
         /* bail-out value , radius of circle ;  */
-        const double EscapeRadius=2;
-        double ER2=EscapeRadius*EscapeRadius;
-        /*create new file,give it a name and open it in binary mode  */
-        fp= fopen(filename,"wb"); /* b -  binary mode */
-        /*write ASCII header to the file*/
-        fprintf(fp,"P6\n %s\n %d\n %d\n %d\n",comment,iXmax,iYmax,MaxColorComponentValue);
-        /* compute and write image data bytes to the file*/
-        for(iY=0; iY<iYmax; iY++)
+        double ER2= 4;
+
+        v8::Local<v8::Array> arr = Nan::New<v8::Array>(iXmax * iYmax * 4);
+
+        for(iX=0; iX<iXmax; iX++)
         {
-                Cy=CyMin + iY*PixelHeight;
-                if (fabs(Cy)< PixelHeight/2) Cy=0.0;  /* Main antenna */
-                for(iX=0; iX<iXmax; iX++)
+                for(iY=0; iY<iYmax; iY++)
                 {
-                        Cx=CxMin + iX*PixelWidth;
+                        Cy= CyMin + (CyMax - CyMin) * iY / (iYmax - 1);
+                        Cx= CxMin + (CxMax - CxMin) * iX / (iXmax - 1);
                         /* initial value of orbit = critical point Z= 0 */
                         Zx=0.0;
                         Zy=0.0;
@@ -68,30 +56,26 @@ v8::Local<v8::Array> generatePng()
                                 Zx2=Zx*Zx;
                                 Zy2=Zy*Zy;
                         };
-                        /* compute  pixel color (24 bit = 3 bytes) */
+
                         if (Iteration==IterationMax)
                         { /*  interior of Mandelbrot set = black */
-                                color[0]=0;
-                                color[1]=0;
-                                color[2]=0;
+                                pixel[0]=0;
+                                pixel[1]=0;
+                                pixel[2]=0;
                         }
                         else
                         { /* exterior of Mandelbrot set = white */
-                                color[0]=255; /* Red*/
-                                color[1]=255; /* Green */
-                                color[2]=255; /* Blue */
+                                pixel[0]=255; /* Red*/
+                                pixel[1]=255; /* Green */
+                                pixel[2]=255; /* Blue */
                         };
-                        /*write color to the file*/
-                        fwrite(color,1,3,fp);
+
+                        int offset = (iYmax * iY + iX) * 4;
+                        Nan::Set(arr, offset + 0, Nan::New(pixel[0]));
+                        Nan::Set(arr, offset + 1, Nan::New(0));
+                        Nan::Set(arr, offset + 2, Nan::New(0));
+                        Nan::Set(arr, offset + 3, Nan::New(iX));
                 }
         }
-        fclose(fp);
-
-        v8::Local<v8::Array> arr = Nan::New<v8::Array>(4);
-        Nan::Set(arr, 0, Nan::New(1));
-        Nan::Set(arr, 1, Nan::New(2));
-        Nan::Set(arr, 2, Nan::New(3));
-        Nan::Set(arr, 3, Nan::New(5));
-
         return arr;
 }

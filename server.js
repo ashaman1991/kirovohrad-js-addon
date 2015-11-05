@@ -15,9 +15,11 @@ let util = require('./util');
 //   .listen(1337, "127.0.0.1");
 
 // console.log('Server running at http://127.0.0.1:1337/');
-let height = 2000;
-let width = 3000;
+let height = 255;
+let width = 255;
 // let pic = plain.heavy(height, width);
-console.log(addon.anArray());
+let nativePic = addon.anArray();
 // console.log(pic);
 // util.generatePng(pic, height, width);
+// console.log(nativePic.slice(0, 100));
+util.generatePng(nativePic, height, width);
