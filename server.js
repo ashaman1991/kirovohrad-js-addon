@@ -4,22 +4,20 @@ let addon = require('./addon/');
 let plain = require('./plain');
 let util = require('./util');
 
-// http.createServer(function (req, res) {
-//     let url = req.url;
-//     console.log(url);
-//     res.writeHead(200, {
-//       'Content-Type': 'text/plain'
-//     });
-//     res.end('Hello World\n');
-//   })
-//   .listen(1337, "127.0.0.1");
+let height = 400;
+let width = 600;
+let xmin = -2;
+let xmax = 1;
+let ymin = -1;
+let ymax = 1;
+let iterations = 700;
 
-// console.log('Server running at http://127.0.0.1:1337/');
-let height = 255;
-let width = 255;
-// let pic = plain.heavy(height, width);
-let nativePic = addon.anArray();
+// let pic = plain.getMandelbrotPixels(height, width, xmin, xmax, ymin, ymax, iterations);
+addon.anArray(height, width, function (val) {
+  // console.log(val);
+  util.generatePng(val, height, width);
+});
 // console.log(pic);
 // util.generatePng(pic, height, width);
 // console.log(nativePic.slice(0, 100));
-util.generatePng(nativePic, height, width);
+// util.generatePng(nativePic, height, width);
