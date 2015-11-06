@@ -1,19 +1,16 @@
+"use strict";
 module.exports = {
   getMandelbrotPixels: mandelbrot,
-  heavy: function (height, width) {
-    console.log('This is heavy js!');
-    return mandelbrot(height, width, -2, 1, -1, 1, 1300);
-  }
 };
 
 function mandelIter(cx, cy, maxIter) {
-  var x = 0.0;
-  var y = 0.0;
-  var xx = 0;
-  var yy = 0;
-  var xy = 0;
+  let x = 0.0;
+  let y = 0.0;
+  let xx = 0;
+  let yy = 0;
+  let xy = 0;
 
-  var i = maxIter;
+  let i = maxIter;
   while (i-- && xx + yy <= 4) {
     xy = x * y;
     xx = x * x;
@@ -25,37 +22,37 @@ function mandelIter(cx, cy, maxIter) {
 }
 
 function mandelbrot(height, width, xmin, xmax, ymin, ymax, iterations) {
-  var pix = [];
+  let pix = [];
 
-  for (var ix = 0; ix < width; ++ix) {
-    for (var iy = 0; iy < height; ++iy) {
-      var x = xmin + (xmax - xmin) * ix / (width - 1);
-      var y = ymin + (ymax - ymin) * iy / (height - 1);
-      var i = mandelIter(x, y, iterations);
-      var ppos = 4 * (width * iy + ix);
+  for (let ix = 0; ix < width; ++ix) {
+    for (let iy = 0; iy < height; ++iy) {
+      let x = xmin + (xmax - xmin) * ix / (width - 1);
+      let y = ymin + (ymax - ymin) * iy / (height - 1);
+      let i = mandelIter(x, y, iterations);
+      let offset = 4 * (width * iy + ix);
 
       if (i > iterations) {
-        pix[ppos] = 0;
-        pix[ppos + 1] = 0;
-        pix[ppos + 2] = 0;
+        pix[offset] = 0;
+        pix[offset + 1] = 0;
+        pix[offset + 2] = 0;
       } else {
-        var c = 3 * Math.log(i) / Math.log(iterations - 1.0);
+        let c = 3 * Math.log(i) / Math.log(iterations - 1.0);
 
         if (c < 1) {
-          pix[ppos] = Math.round(255 * c);
-          pix[ppos + 1] = 0;
-          pix[ppos + 2] = 0;
+          pix[offset] = Math.round(255 * c);
+          pix[offset + 1] = 0;
+          pix[offset + 2] = 0;
         } else if (c < 2) {
-          pix[ppos] = 255;
-          pix[ppos + 1] = Math.round(255 * (c - 1));
-          pix[ppos + 2] = 0;
+          pix[offset] = 255;
+          pix[offset + 1] = Math.round(255 * (c - 1));
+          pix[offset + 2] = 0;
         } else {
-          pix[ppos] = 255;
-          pix[ppos + 1] = 255;
-          pix[ppos + 2] = Math.round(255 * (c - 2));
+          pix[offset] = 255;
+          pix[offset + 1] = 255;
+          pix[offset + 2] = Math.round(255 * (c - 2));
         }
       }
-      pix[ppos + 3] = 255;
+      pix[offset + 3] = 255;
     }
   }
 
