@@ -6,8 +6,8 @@ using v8::FunctionTemplate;
 // C++ constructs that are exposed to javascript are exported here
 
 NAN_MODULE_INIT(InitAll) {
-        Nan::Set(target, Nan::New("anArray").ToLocalChecked(),
-                 Nan::GetFunction(Nan::New<FunctionTemplate>(anArray)).ToLocalChecked());
+        Nan::Set(target, Nan::New("mandelbrotSync").ToLocalChecked(),
+                 Nan::GetFunction(Nan::New<FunctionTemplate>(mandelbrotSync)).ToLocalChecked());
 }
 
 NODE_MODULE(NativeExtension, InitAll)

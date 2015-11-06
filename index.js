@@ -1,5 +1,4 @@
 'use strict';
-let http = require('http');
 let addon = require('./addon/');
 let plain = require('./plain');
 let util = require('./util');
@@ -18,6 +17,6 @@ let iterations = 20000;
 let pic = plain.getMandelbrotPixels(height, width, xmin, xmax, ymin, ymax, iterations);
 util.generatePng(pic, height, width, 'js.png');
 
-addon.anArray(height, width, xmin, xmax, ymin, ymax, iterations, function (val) {
+addon.mandelbrotSync(height, width, xmin, xmax, ymin, ymax, iterations, function (val) {
   util.generatePng(val, height, width, 'native.png');
 });

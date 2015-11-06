@@ -1,7 +1,7 @@
 {
-  "main": "server .js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "configure": "cd ./addon && node-gyp configure",
     "build": "cd ./addon && node-gyp rebuild",
     "test": "cd ./addon && mocha"

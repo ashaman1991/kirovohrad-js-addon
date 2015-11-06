@@ -1,12 +1,9 @@
 #include "functions.h"
 #include "./lib/heavy.h"
-#include <node.h>
-#include <nan.h>
-#include <math.h>
 
 using namespace node;
 using namespace v8;
-NAN_METHOD(anArray) {
+NAN_METHOD(mandelbrotSync) {
         // get calback argument
         unsigned int height = info[0]->Uint32Value();
         unsigned int width = info[1]->Uint32Value();
