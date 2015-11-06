@@ -3,7 +3,8 @@ var fs = require('fs'),
   PNG = require('pngjs')
   .PNG;
 
-function generatePng(pixels, height, width) {
+function generatePng(pixels, height, width, fName) {
+  fName = fName || 'out.png';
   height = height || 100;
   width = width || 100;
 
@@ -15,7 +16,7 @@ function generatePng(pixels, height, width) {
 
   png.data = pixels;
   png.pack()
-    .pipe(fs.createWriteStream('out.png'));
+    .pipe(fs.createWriteStream(fName));
 }
 
 module.exports = {
