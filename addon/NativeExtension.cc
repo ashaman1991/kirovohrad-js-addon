@@ -6,8 +6,12 @@ using v8::FunctionTemplate;
 // C++ constructs that are exposed to javascript are exported here
 
 NAN_MODULE_INIT(InitAll) {
-        Nan::Set(target, Nan::New("mandelbrotSync").ToLocalChecked(),
-                 Nan::GetFunction(Nan::New<FunctionTemplate>(mandelbrotSync)).ToLocalChecked());
+  Nan::Set(target, Nan::New("mandelbrotSync").ToLocalChecked(),
+           Nan::GetFunction(Nan::New<FunctionTemplate>(
+                              mandelbrotSync)).ToLocalChecked());
+  Nan::Set(target, Nan::New("mandelbrotAsync").ToLocalChecked(),
+           Nan::GetFunction(Nan::New<FunctionTemplate>(
+                              CalculateAsync)).ToLocalChecked());
 }
 
 NODE_MODULE(NativeExtension, InitAll)
