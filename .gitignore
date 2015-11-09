@@ -3,3 +3,4 @@ build/
 *.png
 *.ppm
 npm-debug.log
+a.out
