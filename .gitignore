@@ -2,3 +2,4 @@ node_modules
 build/
 *.png
 *.ppm
+npm-debug.log
