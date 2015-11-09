@@ -32,14 +32,14 @@ int iteration(double cx, double cy, int maxIter) {
   return maxIter - i;
 }
 
-v8::Local<v8::Array>getMandelbrotPixels(unsigned int height,
-                                        unsigned int width,
-                                        double       xmin,
-                                        double       xmax,
-                                        double       ymin,
-                                        double       ymax,
-                                        unsigned int iterations) {
-  v8::Local<v8::Array> pix = Nan::New<v8::Array>((height * width) << 2);
+unsigned char* getMandelbrotPixels(unsigned int height,
+                                   unsigned int width,
+                                   double       xmin,
+                                   double       xmax,
+                                   double       ymin,
+                                   double       ymax,
+                                   unsigned int iterations) {
+  unsigned char *pix = new unsigned char[(height * width) << 2];
 
   for (unsigned int ix = 0; ix < width; ++ix) {
     for (unsigned int iy = 0; iy < height; ++iy) {
@@ -49,44 +49,59 @@ v8::Local<v8::Array>getMandelbrotPixels(unsigned int height,
       double i      = iteration(x, y, iterations);
 
       if (i  ==  iterations) {
-        Nan::Set(pix, offset + 0, Nan::New(0));
-        Nan::Set(pix, offset + 1, Nan::New(0));
-        Nan::Set(pix, offset + 2, Nan::New(0));
+        pix[offset]     = 0;
+        pix[offset + 1] = 0;
+        pix[offset + 2] = 0;
       } else {
         double c = 3 * log(i) / log(iterations - 1.0);
 
         if (c < 1) {
-          Nan::Set(pix, offset + 0, Nan::New((unsigned char)(255 * c)));
-          Nan::Set(pix, offset + 1, Nan::New(0));
-          Nan::Set(pix, offset + 2, Nan::New(0));
+          pix[offset]     = (unsigned char)(255 * c);
+          pix[offset + 1] = 0;
+          pix[offset + 2] = 0;
         } else
         if ((c < 2) && (c > 1)) {
-          Nan::Set(pix, offset + 0, Nan::New(255));
-          Nan::Set(pix, offset + 1, Nan::New((unsigned char)(255 * (c - 1))));
-          Nan::Set(pix, offset + 2, Nan::New(0));
+          pix[offset]     = 255;
+          pix[offset + 1] = (unsigned char)(255 * (c - 1));
+          pix[offset + 2] = 0;
         } else {
-          Nan::Set(pix, offset + 0, Nan::New(255));
-          Nan::Set(pix, offset + 1, Nan::New(255));
-          Nan::Set(pix, offset + 2, Nan::New((unsigned char)(255 * (c - 2))));
+          pix[offset]     = 255;
+          pix[offset + 1] = 255;
+          pix[offset + 2] = (unsigned char)(255 * (c - 2));
         }
       }
-      Nan::Set(pix, offset + 3, Nan::New(255));
+      pix[offset + 3] = 255;
     }
   }
   return pix;
 }
 
+v8::Local<v8::Array>copyArray(unsigned char *arr, unsigned long int length) {
+  v8::Local<v8::Array> copy = Nan::New<v8::Array>(length);
+
+  for (unsigned long int i = 0; i < length; i++) {
+    Nan::Set(copy, i, Nan::New(arr[i]));
+  }
+
+  return copy;
+}
+
 void Mandelbrot::Execute() {
-  // Nan::Set(pixels, 0, Nan::New(255));
-  std::cout << "<<<<<<<<<" << std::endl;
-  // v8::Local<v8::Array> pix = Nan::New<v8::Array>(10); //
-  // getMandelbrotPixels(height,
-  //                     width, xmin, xmax,
-  //                     ymin, ymax,
-  //                     iterations);
+  pixels = getMandelbrotPixels(height,
+                               width,
+                               xmin,
+                               xmax,
+                               ymin,
+                               ymax,
+                               iterations);
+}
 
-  // pixels = &pix;
+void Mandelbrot::HandleOKCallback() {
+  v8::Local<v8::Array> pix = copyArray(pixels, (height * width) << 2);
+  Handle<Value> data       = Handle<Value>::Cast(pix);
+  Local<Value>  argv[1]    = {
+    data
+  };
 
-  // pixels = Nan::New<v8::Array>(10);//
-  std::cout << "<<<<<<<<<" << std::endl;
+  callback->Call(1, argv);
 }

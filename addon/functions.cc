@@ -1,7 +1,7 @@
 #include "functions.h"
 #include "./lib/heavy.h"
 #include <nan.h>
-#include <iostream>
+
 using namespace node;
 using namespace v8;
 NAN_METHOD(mandelbrotSync) {
@@ -16,17 +16,18 @@ NAN_METHOD(mandelbrotSync) {
 
   v8::Local<v8::Function> callbackHandle = info[7].As<v8::Function>();
 
-  v8::Local<v8::Array> arr = getMandelbrotPixels(height,
-                                                 width,
-                                                 xmin,
-                                                 xmax,
-                                                 ymin,
-                                                 ymax,
-                                                 iterations);
+  unsigned char *arr = getMandelbrotPixels(height,
+                                           width,
+                                           xmin,
+                                           xmax,
+                                           ymin,
+                                           ymax,
+                                           iterations);
 
   // cast pixel array to return into callback
-  Handle<Value> picture = Handle<Value>::Cast(arr);
-  Local<Value>  argv[1] = { picture };
+  v8::Local<v8::Array> pix = copyArray(arr, (height * width) << 2);
+  Handle<Value> picture    = Handle<Value>::Cast(pix);
+  Local<Value>  argv[1]    = { picture };
   Nan::MakeCallback(Nan::GetCurrentContext()->Global(), callbackHandle, 1, argv);
   info.GetReturnValue().SetUndefined();
 }
@@ -40,9 +41,7 @@ NAN_METHOD(CalculateAsync)
   double ymin             = info[4]->NumberValue();
   double ymax             = info[5]->NumberValue();
   unsigned int iterations = info[6]->Uint32Value();
-  Callback *callback = new Callback(info[7].As<Function>());
-
-  std::cout << height << std::endl;
+  Callback    *callback   = new Callback(info[7].As<Function>());
 
   AsyncQueueWorker(new Mandelbrot(callback,
                                   height,
