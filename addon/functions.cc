@@ -1,5 +1,6 @@
 #include "functions.h"
 #include "./lib/heavy.h"
+#include "./lib/mandelbrot.h"
 #include <nan.h>
 
 using namespace node;
@@ -32,7 +33,7 @@ NAN_METHOD(mandelbrotSync) {
   info.GetReturnValue().SetUndefined();
 }
 
-NAN_METHOD(CalculateAsync)
+NAN_METHOD(mandelbrotAsync)
 {
   unsigned int height     = info[0]->Uint32Value();
   unsigned int width      = info[1]->Uint32Value();

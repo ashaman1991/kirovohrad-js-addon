@@ -13,10 +13,16 @@ function generatePng(pixels, height, width, fName) {
     width: width,
     height: height,
   });
+  
+  console.log(fName);
 
   png.data = pixels;
+  let fstream = fs.createWriteStream(fName);
+  fstream.on('finish', function () {
+    // console.log(fName);
+  });
   png.pack()
-    .pipe(fs.createWriteStream(fName));
+    .pipe(fstream);
 }
 
 module.exports = {

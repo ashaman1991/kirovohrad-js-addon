@@ -8,6 +8,6 @@
 // Implementations are in functions.cc
 
 NAN_METHOD(mandelbrotSync);
-NAN_METHOD(CalculateAsync);
+NAN_METHOD(mandelbrotAsync);
 
 #endif

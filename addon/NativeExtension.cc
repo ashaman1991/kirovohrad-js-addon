@@ -11,7 +11,7 @@ NAN_MODULE_INIT(InitAll) {
                               mandelbrotSync)).ToLocalChecked());
   Nan::Set(target, Nan::New("mandelbrotAsync").ToLocalChecked(),
            Nan::GetFunction(Nan::New<FunctionTemplate>(
-                              CalculateAsync)).ToLocalChecked());
+                              mandelbrotAsync)).ToLocalChecked());
 }
 
 NODE_MODULE(NativeExtension, InitAll)

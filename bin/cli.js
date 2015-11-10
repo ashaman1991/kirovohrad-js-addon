@@ -31,9 +31,7 @@ let iterations = program.iterations || 20000;
 
 for (let i = 0; i < count; i++) {
   if (nativeMode) {
-    addon.mandelbrotSync(height, width, xmin, xmax, ymin, ymax, iterations, function (val) {
-      util.generatePng(val, height, width, path + 'native' + i + '.png');
-    });
+    addon.mandelbrotAsync(height, width, xmin, xmax, ymin, ymax, iterations, path + 'native' + i + '.png', function (val) {});
   } else {
     util.generatePng(plain.getMandelbrotPixels(height, width, xmin, xmax, ymin, ymax, iterations), height, width, path + 'js' + i + '.png');
   }
