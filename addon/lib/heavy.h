@@ -4,6 +4,8 @@
 #include <nan.h>
 #include <node.h>
 #include <math.h>
+#include <png.h>
+#include <stdio.h>
 
 using v8::Function;
 using Nan::AsyncQueueWorker;
@@ -28,6 +30,7 @@ double xmax;
 double ymin;
 double ymax;
 unsigned int iterations;
+const char* fname;
 
 public:
 
@@ -38,7 +41,8 @@ Mandelbrot(Callback *callback,
            double xmax,
            double ymin,
            double ymax,
-           unsigned int iterations
+           unsigned int iterations,
+           const char* fname
            )
         : AsyncWorker(callback),
         height(height),
@@ -47,7 +51,8 @@ Mandelbrot(Callback *callback,
         xmax(xmax),
         ymin(ymin),
         ymax(ymax),
-        iterations(iterations) {
+        iterations(iterations),
+        fname(fname) {
 }
 
 ~Mandelbrot() {

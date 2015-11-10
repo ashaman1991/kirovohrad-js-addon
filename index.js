@@ -20,6 +20,6 @@ let iterations = 20000;
 // addon.mandelbrotSync(height, width, xmin, xmax, ymin, ymax, iterations, function (val) {
 //   util.generatePng(val, height, width, 'native.png');
 // });
-// addon.mandelbrotAsync(height, width, xmin, xmax, ymin, ymax, iterations, function (val) {
-//   util.generatePng(val, height, width, 'native.png');
-// });
+addon.mandelbrotAsync(height, width, xmin, xmax, ymin, ymax, iterations, "fname.png", function (val) {
+  // util.generatePng(val, height, width, 'native.png');
+});

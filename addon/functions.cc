@@ -41,7 +41,13 @@ NAN_METHOD(CalculateAsync)
   double ymin             = info[4]->NumberValue();
   double ymax             = info[5]->NumberValue();
   unsigned int iterations = info[6]->Uint32Value();
-  Callback    *callback   = new Callback(info[7].As<Function>());
+
+  v8::String::Utf8Value file(info[7]->ToString());
+  char *fname = (char *)malloc(file.length() + 1);
+
+  strcpy(fname, *file);
+
+  Callback *callback = new Callback(info[8].As<Function>());
 
   AsyncQueueWorker(new Mandelbrot(callback,
                                   height,
@@ -50,5 +56,6 @@ NAN_METHOD(CalculateAsync)
                                   xmax,
                                   ymin,
                                   ymax,
-                                  iterations));
+                                  iterations,
+                                  fname));
 }
