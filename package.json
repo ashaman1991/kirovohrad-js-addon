@@ -3,10 +3,10 @@
   "licanse": "MIT",
   "description": "Demo for KirovohradJS conference",
   "scripts": {
-    "start": "node index.js",
-    "configure": "cd ./addon && node-gyp configure",
-    "build": "cd ./addon && node-gyp rebuild",
-    "test": "cd ./addon && mocha"
+    "start": "node js/index.js",
+    "configure": "node-gyp configure",
+    "build": "node-gyp rebuild",
+    "test": "mocha"
   },
   "devDependencies": {
     "nan": "^2.0.5",

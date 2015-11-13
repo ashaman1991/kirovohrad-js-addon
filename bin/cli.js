@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 'use strict';
-let addon = require('../addon/');
+let addon = require('../index');
 let plain = require('../plain');
 let util = require('../util');
 let program = require('commander');

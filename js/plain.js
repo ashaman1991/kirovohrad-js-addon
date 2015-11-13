@@ -1,7 +1,4 @@
 "use strict";
-module.exports = {
-  getMandelbrotPixels: mandelbrot,
-};
 
 function mandelIter(cx, cy, maxIter) {
   let x = 0.0;
@@ -58,3 +55,7 @@ function mandelbrot(height, width, xmin, xmax, ymin, ymax, iterations) {
 
   return pix;
 }
+
+module.exports = {
+  getMandelbrotPixels: mandelbrot,
+};
