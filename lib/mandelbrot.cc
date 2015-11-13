@@ -4,7 +4,6 @@ int writeImage(const char    *filename,
                int            width,
                int            height,
                unsigned char *buffer) {
-  int   code           = 0;
   FILE *fp             = NULL;
   png_structp png_ptr  = NULL;
   png_infop   info_ptr = NULL;
@@ -38,8 +37,6 @@ int writeImage(const char    *filename,
 
   // End write
   png_write_end(png_ptr, NULL);
-
-  return code;
 
   return 0;
 }

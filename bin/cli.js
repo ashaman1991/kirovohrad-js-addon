@@ -2,13 +2,13 @@
 
 'use strict';
 let addon = require('../index');
-let plain = require('../plain');
-let util = require('../util');
+let plain = require('../js/plain');
+let util = require('../js/util');
 let program = require('commander');
 
 program
   .version("1.0.0")
-  .option('-n, --native', 'Use native addon')
+  .option('-n, --native', 'Use native async code (or use JS version by default)')
   .option('-o, --out [path]', 'Custom save path')
   .option('-i --iterations [iterations]', 'Number of iterations', parseInt)
   .option('-c --count [count]', 'How much pictures do you want?', parseInt)

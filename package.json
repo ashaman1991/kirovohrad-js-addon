@@ -1,6 +1,7 @@
 {
+  "name": "native-demo",
   "main": "index.js",
-  "licanse": "MIT",
+  "license": "MIT",
   "description": "Demo for KirovohradJS conference",
   "scripts": {
     "start": "node js/index.js",
@@ -18,5 +19,8 @@
     "bindings": "^1.2.1",
     "commander": "^2.9.0",
     "pngjs": "^2.1.0"
+  },
+  "bin": {
+    "native-demo": "./bin/cli.js"
   }
 }
