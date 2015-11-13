@@ -18,8 +18,8 @@ let count = program.count || 1;
 let nativeMode = program.native ? true : false;
 let path = program.out || '';
 
-let height = 900;
-let width = 900;
+let height = 1000;
+let width = 1000;
 let R = 1.7E-4;
 let Cx = -1.25066;
 let Cy = 0.02012;

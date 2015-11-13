@@ -14,10 +14,10 @@ let ymin = Cy - R;
 let ymax = Cy + R;
 let iterations = 20000;
 
-let pic = plain.getMandelbrotPixels(height, width, xmin, xmax, ymin, ymax, iterations);
-util.generatePng(pic, height, width, 'js.png');
-//
+addon.mandelbrotAsync(height, width, xmin, xmax, ymin, ymax, iterations, "fname.png", function (val) {});
+
 addon.mandelbrotSync(height, width, xmin, xmax, ymin, ymax, iterations, function (val) {
   util.generatePng(val, height, width, 'native.png');
 });
-addon.mandelbrotAsync(height, width, xmin, xmax, ymin, ymax, iterations, "fname.png", function (val) {});
+
+util.generatePng(plain.getMandelbrotPixels(height, width, xmin, xmax, ymin, ymax, iterations), height, width, 'js.png');

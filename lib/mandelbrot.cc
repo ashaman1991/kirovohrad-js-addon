@@ -54,7 +54,6 @@ void Mandelbrot::Execute() {
                                iterations);
 
   writeImage(fname, width, height, pixels);
-  printf("%s\n", fname);
 }
 
 void Mandelbrot::HandleOKCallback() {

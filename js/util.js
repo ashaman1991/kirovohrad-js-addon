@@ -3,7 +3,7 @@ let fs = require('fs'),
   PNG = require('pngjs')
   .PNG;
 
-function generatePng(pixels, height, width, fName) {
+function generatePng(pixels, height, width, fName, done) {
   fName = fName || 'out.png';
   height = height || 100;
   width = width || 100;
@@ -19,7 +19,10 @@ function generatePng(pixels, height, width, fName) {
   png.data = pixels;
   let fstream = fs.createWriteStream(fName);
   fstream.on('finish', function () {
-    console.log(fName);
+    // console.log(fName);
+    if (typeof done === 'function') {
+      done();
+    }
   });
   png.pack()
     .pipe(fstream);

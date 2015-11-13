@@ -1,42 +1,56 @@
-var nativeExtension = require('../');
-var assert = require('assert');
+'use strict';
 
+let nativeExtension = require('../');
+let assert = require('chai')
+  .assert;
+let fs = require('fs');
+let util = require('../js/util');
+let plain = require('../js/plain');
 
-describe('native extension', function() {
-  it('should export function that returns nothing', function() {
-    assert.equal(nativeExtension.nothing(), undefined);
+let height = 1200;
+let width = 1200;
+let R = 1.7E-4;
+let Cx = -1.25066;
+let Cy = 0.02012;
+let xmin = Cx - R;
+let xmax = Cx + R;
+let ymin = Cy - R;
+let ymax = Cy + R;
+let iterations = 20000;
+
+before(function (done) {
+  done();
+});
+
+after(function (done) {
+  fs.readdir('./', function (err, files) {
+    let pics = files.filter(function (elem) {
+      return elem.match('\.png');
+    })
+
+    pics.forEach(function (pic) {
+      fs.unlink(pic);
+    })
+    done();
+  });
+});
+
+describe('Native extension', function () {
+  this.timeout(10000);
+  it('should generate Png file synchronously::C++', function (done) {
+    nativeExtension.mandelbrotSync(height, width, xmin, xmax, ymin, ymax, iterations, function (pixels) {
+      assert.isArray(pixels);
+      util.generatePng(pixels, height, width, 'testNativeSync.png', done);
+    });
   });
 
-  it('should export a function that returns a string', function() {
-    assert.equal(typeof nativeExtension.aString(), 'string');
+  it('should generate Png file asynchronously::C++', function (done) {
+    nativeExtension.mandelbrotAsync(height, width, xmin, xmax, ymin, ymax, iterations, 'testNativeAsync.png', function (res) {
+      done();
+    });
   });
 
-  it('should export a function that returns a boolean', function() {
-    assert.equal(typeof nativeExtension.aBoolean(), 'boolean');
+  it('should generate Png file synchronously::JS', function (done) {
+    util.generatePng(plain.getMandelbrotPixels(height, width, xmin, xmax, ymin, ymax, iterations), height, width, 'jsTest.png', done);
   });
-
-  it('should export function that returns a number', function() {
-    assert.equal(typeof nativeExtension.aNumber(), 'number');
-  });
-
-  it('should export function that returns an object', function() {
-    assert.equal(typeof nativeExtension.anObject(), 'object');
-  });
-
-  it('should export function that returns an object with a key, value pair', function() {
-    assert.deepEqual(nativeExtension.anObject(), {'key': 'value'});
-  });
-
-  it('should export function that returns an array', function() {
-    assert.equal(Array.isArray(nativeExtension.anArray()), true);
-  });
-
-  it('should export function that returns an array with some values', function() {
-    assert.deepEqual(nativeExtension.anArray(), [1, 2, 3]);
-  });
-
-  it('should export function that calls a callback', function(done) {
-    nativeExtension.callback(done);
-  });
-  
 });

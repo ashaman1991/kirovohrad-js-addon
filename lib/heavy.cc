@@ -85,21 +85,3 @@ v8::Local<v8::Array>copyArray(unsigned char *arr, unsigned long int length) {
 
   return copy;
 }
-
-//
-// void Mandelbrot::Execute() {
-//   pixels = getMandelbrotPixels(height,
-//                                width,
-//                                xmin,
-//                                xmax,
-//                                ymin,
-//                                ymax,
-//                                iterations);
-//
-//   writeImage(fname, width, height, pixels);
-//   printf("%s\n", fname);
-// }
-//
-// void Mandelbrot::HandleOKCallback() {
-//   callback->Call(0, 0);
-// }
